@@ -1,0 +1,86 @@
+I have a program that prints elements from a CSV file as tokens. I need to assign and interpret (based on type) those elements in structure. 
+
+
+
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <time.h>  
+#include <windows.h>  
+/*struct output{  
+   const char *token;  
+}; */  
+
+struct ot{  
+    int time, var1;  
+    float var2;  
+    char var3[10];  
+} ot1;  
+
+int sleep()    
+{
+    int milliseconds = 0;  
+    Sleep(milliseconds); // Sleep three seconds  
+}  
+/*input selection*/  
+int selection(){      // menu selection  
+    int flag = 0;  
+    printf("1.start/resume 4.end\n"); // input referals  
+    switch(getch()){    //collect input from user  
+    case 49: //ASCII for 1  
+        flag =0; //press 1 set flag to 0 means start  
+        break;  
+    case 52: //ASCII for 4  
+        exit(0);  
+        break;        //press 4, exit the program   
+    }  
+    return 1;  
+}  
+int main()  
+{  
+    /*declaring variables*/  
+   //struct output st1;  
+    struct ot ot1;  
+    const char *token;  
+    int i = 0, status;  
+    char s[10];  
+    /*opening the file in read mode*/  
+    FILE *the_file = fopen("sample_data.csv", "r");  
+    /*condition to check if it is a null file*/  
+    if (the_file == NULL)  
+    {  
+        perror("unable to open the file");  
+        exit(1);  
+    }  
+    char line[2000]; // declaring as array of characters  
+    status = selection();  
+    while (fscanf(the_file, "%s", line)!=EOF) // loop to get each lines from the file  
+    {  
+        if (kbhit()) // checking if keyboard pressed and condition 1, and 4  
+        {  
+            status = selection();  
+        }  
+        int l = atoi(line);  
+        token = strtok(line, ",");   
+        Sleep(l);
+        system("cls");             // to clear screen after
+        while(token != NULL){
+            printf("%s\n", token);
+            i++;  
+            if (i == 0)  
+                ot1.time = atoi(token);   
+            else if (i == 1)  
+                ot1.var1 = atoi(token);  
+            else if (i == 2)  
+                ot1.var2 = atol(token);  
+            else  
+                strcpy(ot1.var3,token);   
+            token = strtok(NULL, ",");//to continue tokenizing the current string  
+        }  
+        i=0;  
+        printf("\n");  
+        printf("%d",ot1.time);  
+
+
+    }  
+    return 0;  
+}  
